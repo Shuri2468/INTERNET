@@ -2,64 +2,36 @@
 
 int main()
 {
-    int bucket, output, n;
-    int packet[10];
-    int i, remaining;
+    int bucket, rate, n, packet, water = 0, i;
 
     printf("Enter bucket size: ");
     scanf("%d", &bucket);
 
     printf("Enter output rate: ");
-    scanf("%d", &output);
+    scanf("%d", &rate);
 
     printf("Enter number of packets: ");
     scanf("%d", &n);
 
-    printf("Enter packet sizes:\n");
-
-    for(i = 0; i < n; i++)
+    for(i = 1; i <= n; i++)
     {
-        scanf("%d", &packet[i]);
-    }
+        printf("Enter packet size: ");
+        scanf("%d", &packet);
 
-    remaining = 0;
-
-    printf("\nPacket\tIncoming\tSent\tRemaining\n");
-
-    for(i = 0; i < n; i++)
-    {
-        if(packet[i] > bucket)
-        {
-            printf("%d\t%d\t\tDropped\t%d\n",
-                   i + 1, packet[i], remaining);
-        }
+        if(water + packet > bucket)
+            printf("Packet dropped\n");
         else
         {
-            remaining = remaining + packet[i];
-
-            if(remaining > bucket)
-            {
-                printf("%d\t%d\t\tDropped\t%d\n",
-                       i + 1, packet[i], remaining - packet[i]);
-                remaining = remaining - packet[i];
-            }
-            else
-            {
-                if(remaining >= output)
-                {
-                    remaining = remaining - output;
-
-                    printf("%d\t%d\t\t%d\t%d\n",
-                           i + 1, packet[i], output, remaining);
-                }
-                else
-                {
-                    printf("%d\t%d\t\t%d\t%d\n",
-                           i + 1, packet[i], remaining, 0);
-                    remaining = 0;
-                }
-            }
+            water = water + packet;
+            printf("Packet accepted\n");
         }
+
+        if(water >= rate)
+            water = water - rate;
+        else
+            water = 0;
+
+        printf("Remaining packets: %d\n", water);
     }
 
     return 0;
