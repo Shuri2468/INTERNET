@@ -2,44 +2,37 @@
 
 int main()
 {
-    int n, graph[10][10], visited[10] = {0};
-    int queue[10], front = 0, rear = 0;
-    int i, j, source;
+    int a[10][10], v[10] = {0}, q[10];
+    int n, s, i, f = 0, r = 0, x;
 
     printf("Enter number of hosts: ");
     scanf("%d", &n);
 
-    printf("Enter the adjacency matrix:\n");
+    printf("Enter adjacency matrix:\n");
     for(i = 0; i < n; i++)
-    {
-        for(j = 0; j < n; j++)
-        {
-            scanf("%d", &graph[i][j]);
-        }
-    }
+        for(int j = 0; j < n; j++)
+            scanf("%d", &a[i][j]);
 
     printf("Enter source host: ");
-    scanf("%d", &source);
+    scanf("%d", &s);
+    s--;
 
-    source = source - 1;
+    q[r++] = s;
+    v[s] = 1;
 
-    queue[rear++] = source;
-    visited[source] = 1;
+    printf("Broadcast Tree:\n");
 
-    printf("\nBroadcast Tree:\n");
-
-    while(front < rear)
+    while(f < r)
     {
-        source = queue[front++];
+        x = q[f++];
 
         for(i = 0; i < n; i++)
         {
-            if(graph[source][i] == 1 && visited[i] == 0)
+            if(a[x][i] == 1 && v[i] == 0)
             {
-                visited[i] = 1;
-                queue[rear++] = i;
-
-                printf("Host %d -> Host %d\n", source + 1, i + 1);
+                printf("%d -> %d\n", x + 1, i + 1);
+                q[r++] = i;
+                v[i] = 1;
             }
         }
     }
